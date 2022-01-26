@@ -21,6 +21,9 @@ DESTINATION_BRANCH="${INPUT_DESTINATION_BRANCH:-"master"}"
 
 # Github actions no longer auto set the username and GITHUB_TOKEN
 git remote set-url origin "https://$GITHUB_ACTOR:$GITHUB_TOKEN@${GITHUB_SERVER_URL#https://}/$GITHUB_REPOSITORY"
+if [[ ${GITHUB_SERVER_URL#https://} != 'github.com' ]]; then
+  git config --global --add hub.host ${GITHUB_SERVER_URL#https://}
+fi
 
 # Pull all branches references down locally so subsequent commands can see them
 git fetch origin '+refs/heads/*:refs/heads/*' --update-head-ok
